@@ -1,9 +1,14 @@
 <template>
   <h1>Jobs</h1>
-  <div v-for="job in jobs" :key="job.id">
-    <router-link :to="{ name: 'JobDetails', params: { id: job.id }}">
-    <h2>{{ job.title }}</h2>
-    </router-link>
+  <div v-if="jobs.length">
+    <div v-for="job in jobs" :key="job.id">
+      <router-link :to="{ name: 'JobDetails', params: { id: job.id }}">
+      <h2>{{ job.title }}</h2>
+      </router-link>
+    </div>
+  </div>
+  <div v-else>
+    Loading jobs...
   </div>
 </template>
 
@@ -12,17 +17,15 @@ export default {
 data() {
     return {
         jobs: [
-            { title: 'UX designer', id: 1, details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
-            { title: 'Software Engineer', id: 2, details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' },
-            { title: 'Graphic Designer', id: 3, details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
-            { title: 'Data Scientist', id: 4, details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
-            { title: 'Product Manager', id: 5, details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' }
+          
         ]
     }
+},
+mounted() {
+  fetch('http://localhost:3000/jobs')
+    .then(res => res.json())
+    .then(data => this.jobs = data)
+    .catch(err => console.log(err.message)) 
 }
 }
 </script>
-
-<style>
-
-</style>
